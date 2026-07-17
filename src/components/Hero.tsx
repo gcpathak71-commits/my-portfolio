@@ -31,14 +31,25 @@ export default function Hero({ onOpenResume }: HeroProps) {
     // Check Speech Synthesis support
     if (typeof window !== 'undefined' && !window.speechSynthesis) {
       setSpeechSupported(false);
+    } else if (typeof window !== 'undefined' && window.speechSynthesis) {
+      // Trigger voice list loading in browsers
+      window.speechSynthesis.getVoices();
+      
+      const handleVoicesChanged = () => {
+        if (window.speechSynthesis) {
+          window.speechSynthesis.getVoices();
+        }
+      };
+      
+      window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+      
+      return () => {
+        if (window.speechSynthesis) {
+          window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+          window.speechSynthesis.cancel();
+        }
+      };
     }
-
-    return () => {
-      // Clean up speech on unmount
-      if (typeof window !== 'undefined' && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -98,28 +109,31 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
       // Select high quality English MALE voice if available
       const voices = window.speechSynthesis.getVoices();
-      const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+      const englishVoices = voices.filter(v => v.lang.startsWith('en') || v.lang.startsWith('EN'));
       
+      const maleVoiceKeywords = [
+        'male', 'mle', 'man', 'guy', 'boy',
+        'rishi', 'ravi', 'heera', 'david', 'george', 
+        'alex', 'daniel', 'fred', 'mark', 'aaron', 
+        'arthur', 'gordon', 'thomas', 'nathan', 'nicholas',
+        'oliver', 'ollie'
+      ];
+
       // Look for English Indian male voice first for cultural relevance, then general English male voices
-      let maleVoice = englishVoices.find(v => 
-        v.lang.toLowerCase().includes('in') && 
-        (v.name.toLowerCase().includes('rishi') || v.name.toLowerCase().includes('ravi') || v.name.toLowerCase().includes('male'))
-      );
+      let maleVoice = englishVoices.find(v => {
+        const nameLower = v.name.toLowerCase();
+        return v.lang.toLowerCase().includes('in') && 
+               (nameLower.includes('rishi') || nameLower.includes('ravi') || nameLower.includes('male'));
+      });
       
       if (!maleVoice) {
         maleVoice = englishVoices.find(v => {
           const nameLower = v.name.toLowerCase();
-          return nameLower.includes('male') || 
-                 nameLower.includes('david') || 
-                 nameLower.includes('george') || 
-                 nameLower.includes('alex') || 
-                 nameLower.includes('daniel') || 
-                 nameLower.includes('fred') || 
-                 nameLower.includes('mark');
+          return maleVoiceKeywords.some(keyword => nameLower.includes(keyword));
         });
       }
       
-      // Fallback to high quality English voices
+      // Fallback to general high quality English voices if no explicit male voice found
       if (!maleVoice) {
         maleVoice = englishVoices.find(v => v.name.includes('Google')) || 
                     englishVoices.find(v => v.lang.startsWith('en-US')) || 
@@ -130,8 +144,15 @@ export default function Hero({ onOpenResume }: HeroProps) {
         utterance.voice = maleVoice;
       }
       
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
+      // Determine if selected voice is explicitly male. If not, lower pitch to 0.85/0.8 to masculinize the sound
+      let isExplicitlyMale = false;
+      if (maleVoice) {
+        const nameLower = maleVoice.name.toLowerCase();
+        isExplicitlyMale = maleVoiceKeywords.some(keyword => nameLower.includes(keyword));
+      }
+      
+      utterance.rate = 0.95; // Calm, professional speaking pace
+      utterance.pitch = isExplicitlyMale ? 0.95 : 0.82; // Deepen voice dynamically if gender is unspecified
 
       utterance.onend = () => {
         setIsSpeaking(false);

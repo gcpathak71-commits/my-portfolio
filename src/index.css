@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Space Grotesk", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .glass-card-hover {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .glass-card-hover:hover {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.25);
+    transform: translateY(-4px);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+
+  .blue-glow {
+    box-shadow: 0 0 50px -10px rgba(59, 130, 246, 0.3);
+  }
+  
+  .indigo-glow {
+    box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.3);
+  }
+}
+
+/* Custom Scrollbar for a premium feeling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+/* Hide scrollbar for clean views where necessary */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Pulsing animated lights */
+@keyframes ambient-pulse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+    opacity: 0.6;
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+    opacity: 0.5;
+  }
+}
+
+.animate-ambient-slow-1 {
+  animation: ambient-pulse 15s infinite alternate ease-in-out;
+}
+
+.animate-ambient-slow-2 {
+  animation: ambient-pulse 20s infinite alternate-reverse ease-in-out;
+}
+
+/* Speaking Avatar Wave Animations */
+@keyframes wave-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.55;
+  }
+}
+
+.animate-wave-pulse-1 {
+  animation: wave-pulse 2.2s infinite ease-in-out;
+}
+
+.animate-wave-pulse-2 {
+  animation: wave-pulse 2.2s infinite ease-in-out;
+  animation-delay: 0.7s;
+}
+
+.animate-wave-pulse-3 {
+  animation: wave-pulse 2.2s infinite ease-in-out;
+  animation-delay: 1.4s;
+}
+
+/* Interactive Resume Media Print Styles */
+@media print {
+  /* Hide all regular elements on the page */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  #root, header, nav, footer, section, div:not(#resume-print-root):not(#resume-print-root *) {
+    display: none !important;
+  }
+
+  /* Show ONLY the printable resume container */
+  #resume-print-root {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 40px !important;
+    background: white !important;
+    color: black !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  #resume-print-root * {
+    color: black !important;
+    border-color: #cbd5e1 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Force display colors, page breaks */
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
+
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+}
+

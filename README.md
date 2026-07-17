@@ -6,6 +6,8 @@
 
 This contains everything you need to run your app locally.
 
+Live Demo-https://my-portfolio-phi-ten-38.vercel.app/
+
 View your app in AI Studio: https://ai.studio/apps/3aeab643-7d80-4af5-8fe9-1217e1944c37
 
 ## Run Locally

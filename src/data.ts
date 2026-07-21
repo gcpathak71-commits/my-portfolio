@@ -155,7 +155,7 @@ export const profileData: Profile = {
     },
     {
       id: "airesumeanalyzer",
-      title: "AI Resume Analyzer Pro",
+      title: "AI Resume Analyzer ",
       subtitle: "ATS Scoring & Semantic Job Role Matching Engine",
       year: "2026",
       description: "A full-stack resume analysis platform with a FastAPI backend and React/TypeScript frontend. Parses uploaded PDF resumes to compute a weighted ATS-readiness score, detects skills via a spaCy + fuzzy-matching pipeline, and recommends job roles using a blended skill-overlap and TF-IDF similarity model, with a downloadable PDF report.",

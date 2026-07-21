@@ -154,6 +154,22 @@ export const profileData: Profile = {
       ]
     },
     {
+      id: "airesumeanalyzer",
+      title: "AI Resume Analyzer Pro",
+      subtitle: "ATS Scoring & Semantic Job Role Matching Engine",
+      year: "2026",
+      description: "A full-stack resume analysis platform with a FastAPI backend and React/TypeScript frontend. Parses uploaded PDF resumes to compute a weighted ATS-readiness score, detects skills via a spaCy + fuzzy-matching pipeline, and recommends job roles using a blended skill-overlap and TF-IDF similarity model, with a downloadable PDF report.",
+      techStack: ["FastAPI", "spaCy", "Scikit-learn", "React", "TypeScript", "Tailwind CSS", "TF-IDF", "NLP"],
+      liveLink: "https://ai-resume-analyzer-beta-rose.vercel.app/",
+      githubLink: "https://github.com/gcpathak71-commits/AI-Resume-Analyzer.git",
+      features: [
+        "Weighted ATS score (0-100) across skills, experience, education, projects, and formatting",
+        "Two-stage skill detection: exact/alias matching plus typo-tolerant fuzzy matching",
+        "Job role recommendations ranked by skill overlap and TF-IDF text similarity",
+        "Downloadable PDF report of the complete resume analysis"
+      ]
+    },
+    {
       id: "studentperformance",
       title: "Student Performance Prediction",
       subtitle: "Multiclass Academic Performance Classification using DNN",
